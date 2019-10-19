@@ -1,7 +1,7 @@
 import { compose } from 'recompose';
 
-import HomeScreen from './HomeView';
+import PassengerScreen from './PassengerView';
 
 export default compose()(
-  HomeScreen,
+  PassengerScreen,
 );

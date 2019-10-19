@@ -1,30 +1,22 @@
 import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 
-import MainTabNavigator from './MainTabNavigator';
-
-import GalleryScreen from '../gallery/GalleryViewContainer';
-
-// To use this screens please see the full version at https://reactnativestarter.com
-// import ProfileScreen from '../containers/ProfileScreen';
-// import ArticleScreen from '../containers/ArticleScreen';
-// import ChatScreen from '../containers/chat/ChatScreen';
-// import MessagesScreen from '../containers/chat/MessagesScreen';
-// import ChartsScreen from '../containers/ChartsScreen';
-
-import AvailableInFullVersion from '../availableInFullVersion/AvailableInFullVersionViewContainer';
-
 import { colors, fonts } from '../../styles';
+import RoleToggler from '../../components/RoleToggler';
+import HomeScreen from '../home/HomeViewContainer';
+import DriverScreen from '../driver/DriverViewContainer';
+import { ROLES } from '../../api/constants';
+import PassengerScreen from '../passenger/PassengerViewContainer';
 
 const headerBackground = require('../../../assets/images/topBarBg.png');
 
 const stackNavigator = createStackNavigator(
   {
-    Main: {
-      screen: MainTabNavigator,
+    Home: {
+      screen: HomeScreen,
       navigationOptions: () => ({
-        title: 'React Native Starter',
+        title: 'Carpool',
         headerLeft: null,
         headerBackground: (
           <Image
@@ -35,41 +27,55 @@ const stackNavigator = createStackNavigator(
         ),
       }),
     },
-    Profile: {
-      screen: AvailableInFullVersion,
-      navigationOptions: {
-        header: null,
-      },
+    Driver: {
+      screen: DriverScreen,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Driver',
+        headerStyle: {
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        headerRight: (
+          <View
+            style={{
+              paddingRight: 8,
+            }}
+          >
+            <RoleToggler
+              style={{
+                paddingRight: 8,
+              }}
+              onPress={() => navigation.navigate('Passenger')}
+              role={ROLES.PASSENGER}
+            />
+          </View>
+        ),
+      }),
     },
-    Gallery: {
-      screen: GalleryScreen,
-      navigationOptions: {
-        title: 'Gallery',
-      },
-    },
-    Article: {
-      screen: AvailableInFullVersion,
-      navigationOptions: {
-        header: null,
-      },
-    },
-    Chat: {
-      screen: AvailableInFullVersion,
-      navigationOptions: {
-        header: null,
-      },
-    },
-    Messages: {
-      screen: AvailableInFullVersion,
-      navigationOptions: {
-        header: null,
-      },
-    },
-    Charts: {
-      screen: AvailableInFullVersion,
-      navigationOptions: {
-        header: null,
-      },
+    Passenger: {
+      screen: PassengerScreen,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Passenger',
+        headerStyle: {
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        headerRight: (
+          <View
+            style={{
+              paddingRight: 8,
+            }}
+          >
+            <RoleToggler
+              style={{
+                paddingRight: 8,
+              }}
+              onPress={() => navigation.navigate('Driver')}
+              role={ROLES.PASSENGER}
+            />
+          </View>
+        ),
+      }),
     },
   },
   {

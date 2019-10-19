@@ -18,6 +18,7 @@ const blueVersion = {
   black: '#000000',
   green: '#6DD0A3',
   yellow: '#ffc247',
+  error: '#FF0000'
 };
 
 export default blueVersion;

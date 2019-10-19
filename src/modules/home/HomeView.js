@@ -1,25 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   View,
-  TouchableOpacity,
   ImageBackground,
 } from 'react-native';
+import RNLocation from 'react-native-location';
 
-import { fonts, colors } from '../../styles';
-import { Text } from '../../components/StyledText';
+import {  Button } from '../../components';
 
-export default function HomeScreen({ isExtended, setIsExtended }) {
-  // const rnsUrl = 'https://reactnativestarter.com';
-  // const handleClick = () => {
-  //   Linking.canOpenURL(rnsUrl).then(supported => {
-  //     if (supported) {
-  //       Linking.openURL(rnsUrl);
-  //     } else {
-  //       console.log(`Don't know how to open URI: ${rnsUrl}`);
-  //     }
-  //   });
-  // };
+export default function HomeScreen(props) {
+  
+  useEffect(() => {
+    RNLocation.requestPermission({
+      ios: 'whenInUse',
+      android: {
+        detail: 'coarse',
+        rationale: {
+          title: 'We need to access your location to finish your carpool trip',
+          message: '',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      },
+    });
+    RNLocation.configure({ distanceFilter: 0 });
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -28,49 +33,26 @@ export default function HomeScreen({ isExtended, setIsExtended }) {
         style={styles.bgImage}
         resizeMode="cover"
       >
-        <View style={styles.section}>
-          <Text size={20} white>
-            Home
-          </Text>
-        </View>
-        <View style={styles.section}>
-          <Text color="#19e7f7" size={15}>
-            The smartest Way to build your mobile app
-          </Text>
-          <Text size={30} bold white style={styles.title}>
-            React Native Starter
-          </Text>
-        </View>
-        <View style={[styles.section, styles.sectionLarge]}>
-          <Text color="#19e7f7" hCenter size={15} style={styles.description}>
-            {' '}
-            A powerful starter project that bootstraps development of your
-            mobile application and saves you $20 000*
-          </Text>
-          <View style={styles.priceContainer}>
-            <View style={{ flexDirection: 'row' }}>
-              <Text white bold size={50} style={styles.price}>
-                {isExtended ? '$199.95' : '$49.95'}
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={styles.priceLink}
-              onPress={() =>
-                isExtended ? setIsExtended(false) : setIsExtended(true)
-              }
-            >
-              <Text white size={14}>
-                {isExtended
-                  ? 'Multiple Applications License'
-                  : 'Single Application License'}
-              </Text>
-            </TouchableOpacity>
-          </View>
+        <View style={styles.row}>
+          <Button
+            style={styles.button}
+            primary
+            caption="Driver"
+            onPress={() => props.navigation.navigate("Driver")}
+          />
+          <Button
+            style={styles.button}
+            primary
+            caption="Passenger"
+            onPress={() => props.navigation.navigate("Passenger")}
+          />
         </View>
       </ImageBackground>
     </View>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -82,40 +64,16 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: -20,
   },
-  section: {
+  row: {
     flex: 1,
-    paddingHorizontal: 20,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  sectionLarge: {
-    flex: 2,
-    justifyContent: 'space-around',
-  },
-  sectionHeader: {
+  button: {
+    marginTop: 8,
     marginBottom: 8,
-  },
-  priceContainer: {
-    alignItems: 'center',
-  },
-  description: {
-    padding: 15,
-    lineHeight: 25,
-  },
-  titleDescription: {
-    color: '#19e7f7',
-    textAlign: 'center',
-    fontFamily: fonts.primaryRegular,
-    fontSize: 15,
-  },
-  title: {
-    marginTop: 30,
-  },
-  price: {
-    marginBottom: 5,
-  },
-  priceLink: {
-    borderBottomWidth: 1,
-    borderBottomColor: colors.primary,
-  },
+  }
+  
 });
