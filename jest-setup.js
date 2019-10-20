@@ -7,6 +7,8 @@ Enzyme.configure({ adapter: new Adapter() });
 
 NativeModules.StatusBarManager = { getHeight: jest.fn() };
 
+jest.mock("react-native-location", () => ({}));
+
 // jest.mock('react-native-languages', () => ({
 //   RNLanguages: {
 //     language: 'en',

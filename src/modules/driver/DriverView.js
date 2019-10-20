@@ -74,7 +74,7 @@ export default function DriverScreen(props) {
           />
           <Text style={styles.driverId}>Your ride id is:</Text>
           <Text style={styles.textAccent}>{props.data.id}</Text>
-          <Button caption="Continuar" style={styles.button} onPress={onPress} />
+          <Button caption="Continue" style={styles.button} onPress={onPress} />
         </>
       ) : (
         <View style={styles.qrCode}>
