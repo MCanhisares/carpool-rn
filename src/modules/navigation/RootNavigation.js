@@ -6,6 +6,8 @@ import { colors, fonts } from '../../styles';
 import RoleToggler from '../../components/RoleToggler';
 import HomeScreen from '../home/HomeViewContainer';
 import DriverScreen from '../driver/DriverViewContainer';
+import RideMapScreen from '../rideMap/RideMapViewContainer';
+import RideFinishedScreen from '../rideFinished/RideFinishedViewContainer';
 import { ROLES } from '../../api/constants';
 import PassengerScreen from '../passenger/PassengerViewContainer';
 
@@ -75,6 +77,18 @@ const stackNavigator = createStackNavigator(
             />
           </View>
         ),
+      }),
+    },
+    RideMap: {
+      screen: RideMapScreen,
+      navigationOptions: () => ({        
+        header: null
+      }),
+    },
+    RideFinished: {
+      screen: RideFinishedScreen,
+      navigationOptions: () => ({        
+        header: null
       }),
     },
   },

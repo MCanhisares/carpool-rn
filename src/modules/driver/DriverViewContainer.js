@@ -9,7 +9,7 @@ export default compose(
   connect(
     state => ({
       isLoading: state.driver.isLoading,
-      qrCode: state.driver.qrCode,
+      data: state.driver.data,
     }),
     dispatch => ({
       loadQrCode: () => dispatch(loadQrCode()),  

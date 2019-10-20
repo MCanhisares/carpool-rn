@@ -1,6 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text, ActivityIndicator, Alert } from 'react-native';
-import {StackActions, NavigationActions } from 'react-navigation';
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import { fonts, colors } from '../../styles';
 import { Button } from '../../components';
@@ -9,20 +16,21 @@ import { ROLES } from '../../api/constants';
 
 export default function DriverScreen(props) {
   const onPress = async () => {
-    const {id} = props.qrCode
+    const { id } = props.data;
     const response = await fetchRide(id);
-    const {
-      passengerScanned,
-      driverPosition,
-      passengerPosition,
-      distance,
-    } = await response.json();
+    const { driverLoc, passengerLoc, distance } = await response.json();
 
-
-    if (!passengerScanned) {
+    if (!passengerLoc) {
       Alert.alert(
-        'Atenção!',
-        'O passageiro ainda não escaneou o código.',
+        'Hey!',
+        'Your passenger has not yet scanned this barcode!',
+        [{ text: 'OK' }],
+        { cancelable: true },
+      );
+    } else if (distance && distance >= 10) {
+      Alert.alert(
+        'Hey!',
+        'You and your passenger need to be close to each other to start carpooling!',
         [{ text: 'OK' }],
         { cancelable: true },
       );
@@ -32,11 +40,11 @@ export default function DriverScreen(props) {
           index: 0,
           actions: [
             NavigationActions.navigate({
-              routeName: 'ShareLocation',
+              routeName: 'RideMap',
               params: {
                 role: ROLES.DRIVER,
-                driverPosition,
-                passengerPosition,
+                driverLoc,
+                passengerLoc,
                 distance,
                 rideId: id,
               },
@@ -54,16 +62,19 @@ export default function DriverScreen(props) {
       </View>
     );
   }
-
+  
   return (
     <View style={styles.container}>
-      {props.qrCode ? (
+      {props.data ? (
         <>
           <Text style={styles.title}>Show this to your passenger</Text>
-          <Image source={{ uri: props.qrCode.qrCode }} style={styles.qrCode} />
-          <Text style={styles.driverId}>Your driver id is:</Text>
-          <Text style={styles.textAccent}>{props.qrCode.id}</Text>
-          <Button title="Continuar" style={styles.button} onPress={onPress} />
+          <Image
+            source={{ uri: props.data.qrCode }}
+            style={styles.qrCode}
+          />
+          <Text style={styles.driverId}>Your ride id is:</Text>
+          <Text style={styles.textAccent}>{props.data.id}</Text>
+          <Button caption="Continuar" style={styles.button} onPress={onPress} />
         </>
       ) : (
         <View style={styles.qrCode}>
@@ -78,7 +89,7 @@ export default function DriverScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 16,
     alignItems: 'center',
     justifyContent: 'center',

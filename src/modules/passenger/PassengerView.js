@@ -12,25 +12,20 @@ export default function PassengerScreen(props) {
     const location = await RNLocation.getLatestLocation({ timeout: 60000 });
     const position = `${location.latitude},${location.longitude}`;
     const response = await scanPassenger(e.data, position);
-    const {
-      id,
-      driverPosition,
-      passengerPosition,
-      distance,
-    } = await response.json();
+    const { rideId, driverLoc, passengerLoc, distance } = await response.json();    
 
     props.navigation.dispatch(
       StackActions.reset({
         index: 0,
         actions: [
           NavigationActions.navigate({
-            routeName: 'ShareLocation',
+            routeName: 'RideMap',
             params: {
               role: ROLES.PASSENGER,
-              driverPosition,
-              passengerPosition,
+              driverLoc,
+              passengerLoc,
               distance,
-              rideId: id,
+              rideId,
             },
           }),
         ],

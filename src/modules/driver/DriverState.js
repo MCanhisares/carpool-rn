@@ -11,10 +11,10 @@ function startLoadingQrcode() {
   return { type: START_LOADING_QRCODE };
 }
 
-function qrCodeLoaded(qrCode) {
+function qrCodeLoaded(data) {
   return {
     type: QRCODE_LOADED,
-    qrCode,
+    data,
   };
 }
 
@@ -28,7 +28,7 @@ function qrCodeError(err) {
 // Initial state
 const initialState = {
   isLoading: false,
-  qrCode: {},
+  data: {},
   error: null,
 };
 
@@ -39,8 +39,8 @@ export function loadQrCode() {
       .then(location => `${location.latitude},${location.longitude}`)
       .then(position => createRide(position))
       .then(res => res.json())
-      .then((qrCode, id) => {
-        dispatch(qrCodeLoaded({qrCode, id}));
+      .then(obj => {
+        dispatch(qrCodeLoaded(obj));
       })
       .catch(err => {
         dispatch(qrCodeError(err));
@@ -58,7 +58,7 @@ export default function DriverStateReducer(state = initialState, action = {}) {
     case QRCODE_LOADED:
       return Object.assign({}, state, {
         isLoading: false,
-        qrCode: action.qrCode,
+        data: action.data,
       });
     case QRCODE_ERROR:
       return Object.assign({}, state, {

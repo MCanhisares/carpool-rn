@@ -1,5 +1,5 @@
 export const API = {
-    URL: "http://45.79.185.51:3000"
+    URL: "https://d7jtotvg61.execute-api.us-east-1.amazonaws.com/dev/"
 };
 
 export const ROLES = {
